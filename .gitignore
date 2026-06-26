@@ -1,0 +1,20 @@
+*.jl.*.cov
+*.jl.cov
+*.jl.mem
+
+/Manifest.toml
+examples/Manifest.toml
+docs/Manifest.toml
+test/Manifest.toml
+docs/src/manual/NEWS.md
+
+# IDE
+/.vscode
+*.DS_Store
+
+*.svg
+# Generated plots and logs
+*.pdf
+*.png
+*.out
+*.log

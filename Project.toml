@@ -1,0 +1,7 @@
+name = "Desal"
+uuid = "c10c95ac-9782-4ee4-9116-e2afe774bfc7"
+authors = ["Kevin R. Moore <kevmoor@sandia.gov>", "Julian Straus", "Avinash Subramanian"]
+version = "2.0.0"
+
+[compat]
+julia = "1.10"
