@@ -1,5 +1,11 @@
 # Desal
 
+[![Tests](https://github.com/sandialabs/Desal.jl/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/sandialabs/Desal.jl/actions/workflows/ci.yml)
+[![Docs](https://github.com/sandialabs/Desal.jl/actions/workflows/documentation.yml/badge.svg?branch=master)](https://sandialabs.github.io/Desal.jl/dev/)
+[![Coverage](https://codecov.io/gh/sandialabs/Desal.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/sandialabs/Desal.jl)
+
+Documentation is hosted at [sandialabs.github.io/Desal.jl/dev/](https://sandialabs.github.io/Desal.jl/dev/).
+
 `Desal` is a lightweight reverse-osmosis (RO) desalination simulation package with static and dynamic modes.
 It is designed for fast studies of variable-power operation without optimization dependencies.
 
