@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Dynamic RO Walkthrough · Desal</title><meta name="title" content="Dynamic RO Walkthrough · Desal"/><meta property="og:title" content="Dynamic RO Walkthrough · Desal"/><meta property="twitter:title" content="Dynamic RO Walkthrough · Desal"/><meta name="description" content="Documentation for Desal."/><meta property="og:description" content="Documentation for Desal."/><meta property="twitter:description" content="Documentation for Desal."/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">Desal</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><a class="tocitem" href="../../quickstart/">Quick Start</a></li><li><a class="tocitem" href="../../theory/">Theory</a></li><li><a class="tocitem" href="../../api/">API</a></li><li><span class="tocitem">Examples</span><ul><li><a class="tocitem" href="../../examples/">Overview</a></li><li class="is-active"><a class="tocitem" href>Dynamic RO Walkthrough</a><ul class="internal"><li><a class="tocitem" href="#1.-Define-a-plant-design"><span>1. Define a plant design</span></a></li><li><a class="tocitem" href="#2.-Static-operating-point"><span>2. Static operating point</span></a></li><li><a class="tocitem" href="#3.-Dynamic-profile-(fully-exercised)"><span>3. Dynamic profile (fully exercised)</span></a></li><li><a class="tocitem" href="#4.-Plot-dynamic-behavior"><span>4. Plot dynamic behavior</span></a></li></ul></li></ul></li><li><a class="tocitem" href="../../references/">References</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Examples</a></li><li class="is-active"><a href>Dynamic RO Walkthrough</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Dynamic RO Walkthrough</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/sandialabs/Desal.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Dynamic-RO-desalination-walkthrough"><a class="docs-heading-anchor" href="#Dynamic-RO-desalination-walkthrough">Dynamic RO desalination walkthrough</a><a id="Dynamic-RO-desalination-walkthrough-1"></a><a class="docs-heading-anchor-permalink" href="#Dynamic-RO-desalination-walkthrough" title="Permalink"></a></h1><p>This script is both a runnable example and a Literate.jl source used by the docs. It exercises minimum load shutdown, maximum load clipping, first-order response, and ramp-rate limits, then plots dynamic behavior.</p><pre><code class="language-julia hljs">using Desal
+ENV[&quot;GKSwstype&quot;] = get(ENV, &quot;GKSwstype&quot;, &quot;100&quot;)
+using Plots</code></pre><h2 id="1.-Define-a-plant-design"><a class="docs-heading-anchor" href="#1.-Define-a-plant-design">1. Define a plant design</a><a id="1.-Define-a-plant-design-1"></a><a class="docs-heading-anchor-permalink" href="#1.-Define-a-plant-design" title="Permalink"></a></h2><p>The parameters below intentionally emphasize dynamic effects.</p><pre><code class="language-julia hljs">design = DesignStruct(
+    name = &quot;SWRO Dynamic Case&quot;,
+    capacity_m3_per_h = 150.0,
+    specific_energy_nominal_kwh_per_m3 = 3.4,
+    recovery_ratio_nominal = 0.45,
+    min_load = 0.25,
+    max_load = 0.95,
+    ramp_rate_fraction_per_hour = 0.6,
+    response_time_hours = 0.15,
+    feed_salinity_g_per_l = 37.0,
+    nominal_salinity_g_per_l = 35.0,
+    feed_temperature_c = 23.0,
+    nominal_temperature_c = 25.0,
+    part_load_penalty = 0.25,
+    recovery_part_load_sensitivity = 0.18,
+    min_recovery_ratio = 0.2,
+    max_recovery_ratio = 0.65,
+)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">DesignStruct{Float64}(&quot;SWRO Dynamic Case&quot;, 150.0, 3.4, 0.45, 0.25, 0.95, 0.6, 0.15, 37.0, 35.0, 23.0, 25.0, 0.25, 0.18, 0.2, 0.65)</code></pre><h2 id="2.-Static-operating-point"><a class="docs-heading-anchor" href="#2.-Static-operating-point">2. Static operating point</a><a id="2.-Static-operating-point-1"></a><a class="docs-heading-anchor-permalink" href="#2.-Static-operating-point" title="Permalink"></a></h2><pre><code class="language-julia hljs">op_static = OperationStruct(static = true, power_input_mw = 0.32, duration_hours = 1.5)
+static_out = Desalinate(design, op_static)
+println(&quot;Static outputs:&quot;)
+println(static_out)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Static outputs:
+StaticOutputs{Float64}(0.32, 0.32, 86.74984144747373, 118.57597935560699, 3.6887675488577947, 0.4224984520123839, 0.6274509803921569, 31.177642265571524, 0.48, 130.1247621712106, 177.86396903341048)</code></pre><h2 id="3.-Dynamic-profile-(fully-exercised)"><a class="docs-heading-anchor" href="#3.-Dynamic-profile-(fully-exercised)">3. Dynamic profile (fully exercised)</a><a id="3.-Dynamic-profile-(fully-exercised)-1"></a><a class="docs-heading-anchor-permalink" href="#3.-Dynamic-profile-(fully-exercised)" title="Permalink"></a></h2><p>The profile below includes:</p><ul><li>values below minimum stable load</li><li>values above maximum allowed load</li><li>rapid up/down transitions to activate ramp and lag dynamics</li></ul><pre><code class="language-julia hljs">time_hours = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]
+power_profile_mw = [0.0, 0.08, 0.2, 0.55, 0.48, 0.12, 0.5, 0.3, 0.52, 0.0]
+op_dynamic = OperationStruct(
+    static = false,
+    power_input_mw = power_profile_mw,
+    initial_power_mw = 0.0,
+)
+
+dynamic_out = Desalinate(time_hours, design, op_dynamic)
+println(&quot;Dynamic outputs:&quot;)
+println(dynamic_out)</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Dynamic outputs:
+DynamicOutputs{Float64}([0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5], [0.0, 0.08, 0.2, 0.55, 0.48, 0.12, 0.5, 0.3, 0.52, 0.0], [0.0, 0.0, 0.153, 0.306, 0.45899999999999996, 0.30599999999999994, 0.45899999999999996, 0.30599999999999994, 0.45899999999999996, 0.30599999999999994], [0.0, 0.0, 40.282862667127404, 82.73979972188103, 127.87903634578383, 82.73979972188101, 127.87903634578383, 82.73979972188101, 127.87903634578383, 82.73979972188101], [0.0, 0.0, 61.80789239161886, 114.18569128597812, 159.01453911411613, 114.18569128597811, 159.01453911411613, 114.18569128597811, 159.01453911411613, 114.18569128597811], [0.0, 0.0, 3.7981411913124727, 3.6983410768285494, 3.5893295188655303, 3.6983410768285494, 3.5893295188655303, 3.6983410768285494, 3.5893295188655303, 3.6983410768285494], [0.0, 0.0, 0.39457894736842103, 0.4201578947368421, 0.44573684210526315, 0.4201578947368421, 0.44573684210526315, 0.4201578947368421, 0.44573684210526315, 0.4201578947368421], [0.0, 0.0, 0.3, 0.6, 0.8999999999999999, 0.5999999999999999, 0.8999999999999999, 0.5999999999999999, 0.8999999999999999, 0.5999999999999999], [31.177642265571524, 31.177642265571524, 31.177642265571524, 31.177642265571524, 31.177642265571524, 31.177642265571524, 31.177642265571524, 31.177642265571524, 31.177642265571524, 31.177642265571524], 1.377, 377.43958529600144, 497.7971374389399, 3.648265983866287, 0.431242857494116, 0.5399999999999998)</code></pre><h2 id="4.-Plot-dynamic-behavior"><a class="docs-heading-anchor" href="#4.-Plot-dynamic-behavior">4. Plot dynamic behavior</a><a id="4.-Plot-dynamic-behavior-1"></a><a class="docs-heading-anchor-permalink" href="#4.-Plot-dynamic-behavior" title="Permalink"></a></h2><pre><code class="language-julia hljs">rated_power_mw = design.capacity_m3_per_h * design.specific_energy_nominal_kwh_per_m3 / 1000.0
+min_power_mw = rated_power_mw * design.min_load
+max_power_mw = rated_power_mw * design.max_load
+
+t = cumsum(time_hours)
+
+p1 = plot(
+    t,
+    dynamic_out.power_requested_mw;
+    seriestype = :steppost,
+    lw = 2.5,
+    label = &quot;Requested power (MW)&quot;,
+    xlabel = &quot;Time (h)&quot;,
+    ylabel = &quot;Power (MW)&quot;,
+    title = &quot;Power tracking&quot;,
+)
+plot!(
+    p1,
+    t,
+    dynamic_out.power_used_mw;
+    seriestype = :steppost,
+    lw = 2.5,
+    label = &quot;Used power (MW)&quot;,
+)
+hline!(p1, [min_power_mw]; color = :gray40, ls = :dash, label = &quot;Min load&quot;)
+hline!(p1, [max_power_mw]; color = :black, ls = :dot, label = &quot;Max load&quot;)
+
+p2 = plot(
+    t,
+    dynamic_out.water_output_m3_per_h;
+    seriestype = :steppost,
+    lw = 2.5,
+    label = &quot;Water (m^3/h)&quot;,
+    xlabel = &quot;Time (h)&quot;,
+    ylabel = &quot;Flow (m^3/h)&quot;,
+    title = &quot;Product and brine flow&quot;,
+)
+plot!(
+    p2,
+    t,
+    dynamic_out.brine_output_m3_per_h;
+    seriestype = :steppost,
+    lw = 2.5,
+    label = &quot;Brine (m^3/h)&quot;,
+)
+
+p3 = plot(
+    t,
+    dynamic_out.specific_energy_kwh_per_m3;
+    seriestype = :steppost,
+    lw = 2.5,
+    label = &quot;SEC (kWh/m^3)&quot;,
+    xlabel = &quot;Time (h)&quot;,
+    ylabel = &quot;kWh/m^3&quot;,
+    title = &quot;Specific energy&quot;,
+)
+
+p4 = plot(
+    t,
+    dynamic_out.recovery_ratio;
+    seriestype = :steppost,
+    lw = 2.5,
+    label = &quot;Recovery ratio&quot;,
+    xlabel = &quot;Time (h)&quot;,
+    ylabel = &quot;Fraction&quot;,
+    ylim = (0, 1),
+    title = &quot;Recovery and utilization&quot;,
+)
+plot!(
+    p4,
+    t,
+    dynamic_out.capacity_utilization;
+    seriestype = :steppost,
+    lw = 2.5,
+    label = &quot;Capacity utilization&quot;,
+)
+
+p = plot(p1, p2, p3, p4; layout = (2, 2), size = (1200, 800))
+profile_path = joinpath(@__DIR__, &quot;..&quot;, &quot;docs&quot;, &quot;src&quot;, &quot;generated&quot;,
+    &quot;desalination_dynamic_profile.svg&quot;)
+mkpath(dirname(profile_path))
+savefig(p, profile_path)
+println(&quot;Saved plot to: &quot; * abspath(profile_path))</code></pre><pre class="documenter-example-output"><code class="nohighlight hljs ansi">Saved plot to: /home/runner/work/Desal.jl/Desal.jl/docs/build/docs/src/generated/desalination_dynamic_profile.svg</code></pre><p><img src="../desalination_dynamic_profile.svg" alt/></p><pre><code class="language-julia hljs">p</code></pre><img src="02af1a49.svg" alt="Example block output"/><hr/><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../../examples/">« Overview</a><a class="docs-footer-nextpage" href="../../references/">References »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.17.0 on <span class="colophon-date" title="Saturday 27 June 2026 15:27">Saturday 27 June 2026</span>. Using Julia version 1.12.6.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
