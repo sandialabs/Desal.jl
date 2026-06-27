@@ -9,7 +9,7 @@ It is designed for fast studies of variable-power operation without optimization
 
 ```julia
 using Pkg
-Pkg.add(url = "https://github.com/EnergyModelsX/Desal.jl")
+Pkg.add(url = "https://github.com/sandialabs/Desal.jl")
 ```
 
 For local development from a checkout:

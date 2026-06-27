@@ -1,7 +1,7 @@
 name: Documentation
 on:
   push:
-    branches: [main, master]
+    branches: [master]
     tags: '*'
   pull_request:
     types: [opened, synchronize, reopened]
