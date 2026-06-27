@@ -133,8 +133,11 @@ plot!(
 )
 
 p = plot(p1, p2, p3, p4; layout = (2, 2), size = (1200, 800))
-savefig(p, "desalination_dynamic_profile.svg")
-println("Saved plot to: " * abspath("desalination_dynamic_profile.svg"))
+profile_path = joinpath(@__DIR__, "..", "docs", "src", "generated",
+    "desalination_dynamic_profile.svg")
+mkpath(dirname(profile_path))
+savefig(p, profile_path)
+println("Saved plot to: " * abspath(profile_path))
 
 # ![](desalination_dynamic_profile.svg)
 

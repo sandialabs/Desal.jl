@@ -19,5 +19,5 @@ include(joinpath(exdir, "desalination.jl"))
 include(joinpath(exdir, "small_scale_desalination.jl"))
 ```
 
-- `desalination.jl` writes `desalination_dynamic_profile.svg`.
+- `desalination.jl` writes `docs/src/generated/desalination_dynamic_profile.svg`.
 - `small_scale_desalination.jl` writes `small_scale_on_off_profile.svg`.

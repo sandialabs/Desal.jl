@@ -33,8 +33,8 @@ makedocs(
     remotes = nothing,
     format = Documenter.HTML(
         prettyurls = get(ENV, "CI", "false") == "true",
-        edit_link = "main",
-        repolink = "https://github.com/EnergyModelsX/Desal.jl",
+        edit_link = "master",
+        repolink = "https://github.com/sandialabs/Desal.jl",
         assets = String[],
         ansicolor = true,
     ),
@@ -52,5 +52,5 @@ makedocs(
 )
 
 if get(ENV, "CI", "false") == "true"
-    deploydocs(; repo = "github.com/EnergyModelsX/Desal.jl.git", devbranch = "main")
+    deploydocs(; repo = "github.com/sandialabs/Desal.jl.git", devbranch = "master")
 end
